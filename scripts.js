@@ -36,13 +36,14 @@ let hero = {
 
 // defining bullet
 let bullet = {
-  x: hero.x,
+  x: 0,
   y: hero.y,
   h: 50,
   w: 20,
 };
 
 function draw() {
+  // restrict movement of hero
   let xc = constrain(hero.x, leftConstraint, rightConstraint);
 
   background("white");
@@ -67,12 +68,12 @@ function draw() {
   }
 
   // for bullet hitting bubble 1
-  if (keyIsPressed) {
-    if (bullet.y < 0) {
-      bullet.y = bullet.y - 1;
-      bullet.y = height;
-    }
-  }
+  // if (keyIsPressed) {
+  //   if (bullet.y < 0) {
+  //     bullet.y = bullet.y - 1;
+  //     bullet.y = height;
+  //   }
+  // }
 
   // for bullet hitting bubble 2
   // if (bullet.y < 0) {
@@ -85,9 +86,15 @@ function draw() {
   if (currentTime - lastCreationTime > spawnTime) {
     createBubble();
   }
+
+  //for bullet hitting bubble 3
+  if (bullet.y < 0) {
+    bullet.y = bullet.y - 1;
+    bullet.y = height;
+  }
 }
 
-//for bullet hitting bubble 3
+//for bullet hitting bubble 4
 // function keyPressed() {
 //   if (keyCode === SPACE) {
 //     if (bullet.y < 0) {
