@@ -9,7 +9,7 @@ let speedMultiplyer = 0;
 
 // restrict movement of hero
 let leftConstraint = 0;
-let rightConstraint = 400;
+let rightConstraint = 350;
 
 // timers for tracking bubble creation
 const spawnTime = 2000;
