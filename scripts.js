@@ -67,7 +67,7 @@ function draw() {
     console.log("bullets");
   }
 
-  // for bullet hitting bubble 1
+  // for bullet hitting bubble trial 1
   // if (keyIsPressed) {
   //   if (bullet.y < 0) {
   //     bullet.y = bullet.y - 1;
@@ -75,7 +75,7 @@ function draw() {
   //   }
   // }
 
-  // for bullet hitting bubble 2
+  // for bullet hitting bubble trial 2
   // if (bullet.y < 0) {
   //   bullet.y = bullet.y - 1;
   //   bullet.y = height;
@@ -87,14 +87,14 @@ function draw() {
     createBubble();
   }
 
-  //for bullet hitting bubble 3
+  //for bullet hitting bubble trial 3
   if (bullet.y < 0) {
     bullet.y = bullet.y - 1;
     bullet.y = height;
   }
 }
 
-//for bullet hitting bubble 4
+//for bullet hitting bubble trial 4
 // function keyPressed() {
 //   if (keyCode === SPACE) {
 //     if (bullet.y < 0) {
