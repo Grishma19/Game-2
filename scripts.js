@@ -7,6 +7,10 @@ let bubbles = [];
 let score = 0;
 let speedMultiplyer = 0;
 
+// restrict movement of hero
+let leftConstraint = 0;
+let rightConstraint = 400;
+
 // timers for tracking bubble creation
 const spawnTime = 2000;
 let currentTime = 0;
@@ -39,9 +43,11 @@ let bullet = {
 };
 
 function draw() {
+  let xc = constrain(hero.x, leftConstraint, rightConstraint);
+
   background("white");
   fill("red");
-  rect(hero.x, hero.y, hero.w, hero.h);
+  rect(xc, hero.y, hero.w, hero.h);
   rect(bullet.x, bullet.y, bullet.w, bullet.h);
   text(score, 300, 50);
 
@@ -50,11 +56,6 @@ function draw() {
     bubble.y = bubble.y + bubble.speed;
     isHit(hero, bubble);
     isOffScreen(bubble, index);
-  }
-
-  // restrict movement of hero
-  if (hero.x < 400 && hero.x > 0) {
-    hero.x = mouseX - 25;
   }
 
   hero.x = mouseX - 25;
