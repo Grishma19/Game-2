@@ -36,12 +36,6 @@ let hero = {
 
 // defining bullet
 let bullets = [];
-// let bullet = {
-//   x: 0,
-//   y: hero.y,
-//   h: 50,
-//   w: 20,
-// };
 
 function draw() {
   // restrict movement of hero
@@ -75,40 +69,10 @@ function draw() {
   }
 
   for (let bullet of bullets) {
-    circle(bullet.x, bullet.y, 10);
+    rect(bullet.x, bullet.y, 2, 50);
     bullet.y -= 2;
   }
-
-  // for bullet hitting bubble trial 1
-  // if (keyIsPressed) {
-  //   if (bullet.y < 0) {
-  //     bullet.y = bullet.y - 1;
-  //     bullet.y = height;
-  //   }
-  // }
-
-  // for bullet hitting bubble trial 2
-  // if (bullet.y < 0) {
-  //   bullet.y = bullet.y - 1;
-  //   bullet.y = height;
-  // }
-
-  //for bullet hitting bubble trial 3
-  // if (bullet.y < 0) {
-  //   bullet.y = bullet.y - 1;
-  //   bullet.y = height;
-  // }
 }
-
-//for bullet hitting bubble trial 4
-// function keyPressed() {
-//   if (keyCode === SPACE) {
-//     if (bullet.y < 0) {
-//       bullet.y = bullet.y - 1;
-//       bullet.y = height;
-//     }
-//   }
-// }
 
 function isOffScreen(bubble, index) {
   if (bubble.y > 800) {
