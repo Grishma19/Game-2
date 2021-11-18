@@ -34,7 +34,7 @@ let hero = {
   w: 50,
 };
 
-// defining bullet
+// defining bullet array
 let bullets = [];
 
 function draw() {
