@@ -69,7 +69,7 @@ function draw() {
   }
 
   for (let bullet of bullets) {
-    rect(bullet.x, bullet.y, 2, 50);
+    rect(bullet.x, bullet.y, 1, 30);
     bullet.y -= 2;
   }
 }
