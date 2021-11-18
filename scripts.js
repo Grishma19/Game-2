@@ -35,12 +35,13 @@ let hero = {
 };
 
 // defining bullet
-let bullet = {
-  x: 0,
-  y: hero.y,
-  h: 50,
-  w: 20,
-};
+let bullets = [];
+// let bullet = {
+//   x: 0,
+//   y: hero.y,
+//   h: 50,
+//   w: 20,
+// };
 
 function draw() {
   // restrict movement of hero
@@ -49,7 +50,7 @@ function draw() {
   background("white");
   fill("red");
   rect(xc, hero.y, hero.w, hero.h);
-  rect(bullet.x, bullet.y, bullet.w, bullet.h);
+  // rect(bullet.x, bullet.y, bullet.w, bullet.h);
   text(score, 300, 50);
 
   for (let [index, bubble] of bubbles.entries()) {
@@ -67,6 +68,17 @@ function draw() {
     console.log("bullets");
   }
 
+  currentTime = new Date().getTime();
+
+  if (currentTime - lastCreationTime > spawnTime) {
+    createBubble();
+  }
+
+  for (let bullet of bullets) {
+    circle(bullet.x, bullet.y, 10);
+    bullet.y -= 2;
+  }
+
   // for bullet hitting bubble trial 1
   // if (keyIsPressed) {
   //   if (bullet.y < 0) {
@@ -81,17 +93,11 @@ function draw() {
   //   bullet.y = height;
   // }
 
-  currentTime = new Date().getTime();
-
-  if (currentTime - lastCreationTime > spawnTime) {
-    createBubble();
-  }
-
   //for bullet hitting bubble trial 3
-  if (bullet.y < 0) {
-    bullet.y = bullet.y - 1;
-    bullet.y = height;
-  }
+  // if (bullet.y < 0) {
+  //   bullet.y = bullet.y - 1;
+  //   bullet.y = height;
+  // }
 }
 
 //for bullet hitting bubble trial 4
@@ -119,5 +125,15 @@ function isHit(hero, bubble) {
       console.log("HIT");
       window.location.reload();
     }
+  }
+}
+
+function keyPressed() {
+  if (keyCode === 32) {
+    let bullet = {
+      x: mouseX,
+      y: 700,
+    };
+    bullets.push(bullet);
   }
 }
