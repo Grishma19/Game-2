@@ -22,7 +22,7 @@ function createBubble() {
   bubbles.push({
     x: random(400),
     y: 0,
-    d: random(100),
+    r: random(100),
     speed: random(5, speedMultiplyer / 100),
   });
 
@@ -54,7 +54,7 @@ function draw() {
     fill("white");
     strokeWeight(2);
     stroke(random(colorBubble));
-    circle(bubble.x, bubble.y, bubble.d);
+    circle(bubble.x, bubble.y, bubble.r);
     bubble.y = bubble.y + bubble.speed;
     isHit(hero, bubble);
     isOffScreen(bubble, index);
@@ -94,8 +94,8 @@ function isOffScreen(bubble, index) {
 
 // for reload
 function isHit(hero, bubble) {
-  if (bubble.x > hero.x && bubble.x + bubble.d < hero.x + hero.w) {
-    if (bubble.y + bubble.d > hero.y && bubble.y + bubble.d < hero.y + hero.h) {
+  if (bubble.x > hero.x && bubble.x + bubble.r < hero.x + hero.w) {
+    if (bubble.y + bubble.r > hero.y && bubble.y + bubble.r < hero.y + hero.h) {
       console.log("HIT");
       window.location.reload();
     }
