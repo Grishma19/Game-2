@@ -4,6 +4,8 @@ function setup() {
 
 let bubbles = [];
 
+let colorDiff = ["green", "red", "blue", "yellow", "purple"];
+
 let score = 0;
 let speedMultiplyer = 0;
 
@@ -20,10 +22,10 @@ function createBubble() {
   bubbles.push({
     x: random(400),
     y: 0,
-    w: random(100),
-    h: 0,
+    d: random(100),
     speed: random(5, speedMultiplyer / 100),
   });
+
   lastCreationTime = new Date().getTime();
 }
 
@@ -42,13 +44,18 @@ function draw() {
   let xc = constrain(hero.x, leftConstraint, rightConstraint);
 
   background("white");
+
   fill("red");
   rect(xc, hero.y, hero.w, hero.h);
-  // rect(bullet.x, bullet.y, bullet.w, bullet.h);
   text(score, 300, 50);
 
   for (let [index, bubble] of bubbles.entries()) {
-    ellipse(bubble.x, bubble.y, bubble.w, bubble.w);
+    //figure out how to stop the disco balls somehow
+    fill("white");
+    strokeWeight(2);
+    stroke(colorDiff);
+
+    circle(bubble.x, bubble.y, bubble.d);
     bubble.y = bubble.y + bubble.speed;
     isHit(hero, bubble);
     isOffScreen(bubble, index);
@@ -69,11 +76,13 @@ function draw() {
   }
 
   for (let bullet of bullets) {
+    fill("black");
     rect(bullet.x, bullet.y, 1, 30);
     bullet.y -= 2;
   }
 }
 
+// for score
 function isOffScreen(bubble, index) {
   if (bubble.y > 800) {
     bubbles.splice(index, 1);
@@ -83,21 +92,24 @@ function isOffScreen(bubble, index) {
   }
 }
 
+// for reload
 function isHit(hero, bubble) {
-  if (bubble.x > hero.x && bubble.x + bubble.w < hero.x + hero.w) {
-    if (bubble.y + bubble.h > hero.y && bubble.y + bubble.h < hero.y + hero.h) {
+  if (bubble.x > hero.x && bubble.x + bubble.d < hero.x + hero.w) {
+    if (bubble.y + bubble.d > hero.y && bubble.y + bubble.d < hero.y + hero.h) {
       console.log("HIT");
       window.location.reload();
     }
   }
 }
 
+//for bullets
 function keyPressed() {
   if (keyCode === 32) {
     let bullet = {
       x: mouseX,
       y: 700,
     };
+
     bullets.push(bullet);
   }
 }
