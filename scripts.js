@@ -24,7 +24,6 @@ function createBubble() {
     y: 0,
     d: random(100),
     speed: random(5, speedMultiplyer / 100),
-    // colorBubble: [random("green", "red", "blue", "yellow", "purple")],
   });
 
   lastCreationTime = new Date().getTime();
