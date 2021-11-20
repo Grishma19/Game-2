@@ -4,7 +4,7 @@ function setup() {
 
 let bubbles = [];
 
-let colorDiff = ["green", "red", "blue", "yellow", "purple"];
+let colorBubble = [("green", "red", "blue", "yellow", "purple")];
 
 let score = 0;
 let speedMultiplyer = 0;
@@ -24,6 +24,7 @@ function createBubble() {
     y: 0,
     d: random(100),
     speed: random(5, speedMultiplyer / 100),
+    // colorBubble: [random("green", "red", "blue", "yellow", "purple")],
   });
 
   lastCreationTime = new Date().getTime();
@@ -46,15 +47,14 @@ function draw() {
   background("white");
 
   fill("red");
+  noStroke();
   rect(xc, hero.y, hero.w, hero.h);
   text(score, 300, 50);
 
   for (let [index, bubble] of bubbles.entries()) {
-    //figure out how to stop the disco balls somehow
     fill("white");
     strokeWeight(2);
-    stroke(colorDiff);
-
+    stroke(random(colorBubble));
     circle(bubble.x, bubble.y, bubble.d);
     bubble.y = bubble.y + bubble.speed;
     isHit(hero, bubble);
@@ -77,6 +77,7 @@ function draw() {
 
   for (let bullet of bullets) {
     fill("black");
+    stroke("black");
     rect(bullet.x, bullet.y, 1, 30);
     bullet.y -= 2;
   }
