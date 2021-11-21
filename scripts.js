@@ -2,6 +2,9 @@ function setup() {
   createCanvas(400, 800);
 }
 
+// defining bullet array
+let bullets = [];
+
 let bubbles = [];
 
 let colorBubble = [("green", "red", "blue", "yellow", "purple")];
@@ -17,6 +20,15 @@ let rightConstraint = 350;
 const spawnTime = 2000;
 let currentTime = 0;
 let lastCreationTime = 0;
+
+function createBullet() {
+  bullets.push({
+    x: hero.x,
+    y: hero.y,
+    w: 1,
+    y: 30,
+  });
+}
 
 function createBubble() {
   bubbles.push({
@@ -36,9 +48,6 @@ let hero = {
   w: 50,
 };
 
-// defining bullet array
-let bullets = [];
-
 function draw() {
   // restrict movement of hero
   let xc = constrain(hero.x, leftConstraint, rightConstraint);
@@ -50,6 +59,14 @@ function draw() {
   rect(xc, hero.y, hero.w, hero.h);
   text(score, 300, 50);
 
+  //bullet
+  for (let bullet of bullets) {
+    fill("black");
+    stroke("black");
+    rect(bullet.x, bullet.y, 1, 30);
+    bullet.y -= 2;
+  }
+
   for (let [index, bubble] of bubbles.entries()) {
     fill("white");
     strokeWeight(2);
@@ -58,6 +75,17 @@ function draw() {
     bubble.y = bubble.y + bubble.speed;
     isHit(hero, bubble);
     isOffScreen(bubble, index);
+
+    // says error - bullet not defined
+    // shootBubble(bullet, bubble);
+
+    if (score > 100) {
+      fill(random(colorBubble));
+      circle(bubble.x, bubble.y, bubble.d);
+      bubble.y = bubble.y + bubble.speed;
+      isHit(hero, bubble);
+      isOffScreen(bubble, index);
+    }
   }
 
   hero.x = mouseX - 25;
@@ -72,14 +100,6 @@ function draw() {
 
   if (currentTime - lastCreationTime > spawnTime) {
     createBubble();
-  }
-
-  //bullet
-  for (let bullet of bullets) {
-    fill("black");
-    stroke("black");
-    rect(bullet.x, bullet.y, 1, 30);
-    bullet.y -= 2;
   }
 }
 
@@ -115,5 +135,18 @@ function keyPressed() {
     };
 
     bullets.push(bullet);
+  }
+}
+
+// to shoot bubbles
+function shootBubble(bullet, bubble) {
+  if (
+    bubble.x + bubble.d > bullet.x &&
+    bubble.y + bubble.d > bullet.y &&
+    bubble.x - bubble.d < bullet.x + bullet.w &&
+    bubble.y - bubble.d < bullet.y + bullet.h
+  ) {
+    console.log("HIT");
+    window.location.reload();
   }
 }
