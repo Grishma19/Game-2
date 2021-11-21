@@ -82,6 +82,7 @@ function draw() {
     if (score > 100) {
       fill(random(colorBubble));
       circle(bubble.x, bubble.y, bubble.d);
+      stroke(random(colorBubble));
       bubble.y = bubble.y + bubble.speed;
       isHit(hero, bubble);
       isOffScreen(bubble, index);
