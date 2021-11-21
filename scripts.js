@@ -74,6 +74,7 @@ function draw() {
     createBubble();
   }
 
+  //bullet
   for (let bullet of bullets) {
     fill("black");
     stroke("black");
@@ -94,11 +95,14 @@ function isOffScreen(bubble, index) {
 
 // for reload
 function isHit(hero, bubble) {
-  if (bubble.x > hero.x && bubble.x + bubble.d < hero.x + hero.w) {
-    if (bubble.y + bubble.d > hero.y && bubble.y + bubble.d < hero.y + hero.h) {
-      console.log("HIT");
-      window.location.reload();
-    }
+  if (
+    bubble.x + bubble.d > hero.x &&
+    bubble.y + bubble.d > hero.y &&
+    bubble.x - bubble.d < hero.x + hero.w &&
+    bubble.y - bubble.d < hero.y + hero.h
+  ) {
+    console.log("HIT");
+    window.location.reload();
   }
 }
 
