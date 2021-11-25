@@ -4,10 +4,11 @@ function setup() {
 
 // defining bullet array
 let bullets = [];
-
+let stones = [];
 let bubbles = [];
 
-let colorBubble = [("green", "red", "blue", "yellow", "purple")];
+// bubbles of diff
+const colors = ["green", "red", "blue", "yellow", "purple"];
 
 let score = 0;
 let speedMultiplyer = 0;
@@ -21,12 +22,16 @@ const spawnTime = 2000;
 let currentTime = 0;
 let lastCreationTime = 0;
 
+const stoneTime = 10000;
+let lastStoneCreationTime = 0;
+
 function createBullet() {
   bullets.push({
     x: hero.x,
     y: hero.y,
     w: 1,
     y: 30,
+    hit: false,
   });
 }
 
@@ -36,9 +41,24 @@ function createBubble() {
     y: 0,
     d: random(100),
     speed: random(5, speedMultiplyer / 100),
+    hit: false,
+    color: random(colors),
   });
 
   lastCreationTime = new Date().getTime();
+}
+
+function createStone() {
+  stones.push({
+    x: random(400),
+    y: 0,
+    d: random(50),
+    speed: random(5, speedMultiplyer / 100),
+    hit: false,
+    color: random(colors),
+  });
+
+  lastStoneCreationTime = new Date().getTime();
 }
 
 let hero = {
@@ -60,32 +80,54 @@ function draw() {
   text(score, 300, 50);
 
   //bullet
-  for (let bullet of bullets) {
+  for (let [index, bullet] of bullets.entries()) {
     fill("black");
     stroke("black");
     rect(bullet.x, bullet.y, 1, 30);
     bullet.y -= 2;
+    isBulletOffScreen(bullet, index);
   }
 
   for (let [index, bubble] of bubbles.entries()) {
     fill("white");
     strokeWeight(2);
-    stroke(random(colorBubble));
+    stroke(bubble.color);
     circle(bubble.x, bubble.y, bubble.d);
     bubble.y = bubble.y + bubble.speed;
     isHit(hero, bubble);
     isOffScreen(bubble, index);
 
-    // says error - bullet not defined
-    // shootBubble(bullet, bubble);
+    // to shoot bubbles
+    for (let [index, bullet] of bullets.entries()) {
+      bubble.hit = collideRectCircle(
+        bullet.x,
+        bullet.y,
+        1,
+        30,
+        bubble.x,
+        bubble.y,
+        bubble.d
+      );
 
-    if (score > 100) {
-      fill(random(colorBubble));
-      circle(bubble.x, bubble.y, bubble.d);
-      stroke(random(colorBubble));
-      bubble.y = bubble.y + bubble.speed;
-      isHit(hero, bubble);
-      isOffScreen(bubble, index);
+      if (bubble.hit) {
+        bullets.splice(index, 1);
+        bubbles.splice(index, 1);
+        score = score + 10;
+        speedMultiplyer = 100;
+      }
+    }
+  }
+
+  for (let [index, stone] of stones.entries()) {
+    noStroke();
+    fill(stone.color);
+    circle(stone.x, stone.y, stone.d);
+    stone.y = stone.y + stone.speed;
+  }
+
+  if (score > 100) {
+    if (currentTime - lastStoneCreationTime > stoneTime) {
+      createStone();
     }
   }
 
@@ -109,8 +151,15 @@ function isOffScreen(bubble, index) {
   if (bubble.y > 800) {
     bubbles.splice(index, 1);
     console.log(bubbles);
-    score = score + 10;
-    speedMultiplyer = 100;
+    // score = score + 10;
+    // speedMultiplyer = 100;
+  }
+}
+
+// for removing bullet from array
+function isBulletOffScreen(bullet, index) {
+  if (bullet.y < 0) {
+    bullets.splice(index, 1);
   }
 }
 
@@ -136,18 +185,5 @@ function keyPressed() {
     };
 
     bullets.push(bullet);
-  }
-}
-
-// to shoot bubbles
-function shootBubble(bullet, bubble) {
-  if (
-    bubble.x + bubble.d > bullet.x &&
-    bubble.y + bubble.d > bullet.y &&
-    bubble.x - bubble.d < bullet.x + bullet.w &&
-    bubble.y - bubble.d < bullet.y + bullet.h
-  ) {
-    console.log("HIT");
-    window.location.reload();
   }
 }
