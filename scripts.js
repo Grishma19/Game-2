@@ -22,24 +22,30 @@ const spawnTime = 2000;
 let currentTime = 0;
 let lastCreationTime = 0;
 
-const stoneTime = 10000;
+// timers for tracking stone creation
+const stoneTime = 8000;
 let lastStoneCreationTime = 0;
 
+// creating bullet
 function createBullet() {
-  bullets.push({
-    x: hero.x,
-    y: hero.y,
-    w: 1,
-    y: 30,
-    hit: false,
-  });
+  for (let i = 0; i < 10; i++) {
+    //limit bullets on a screen
+    bullets.push({
+      x: hero.x,
+      y: hero.y,
+      w: 1,
+      y: 30,
+      hit: false,
+    });
+  }
 }
 
+// creating bubble
 function createBubble() {
   bubbles.push({
     x: random(400),
     y: 0,
-    d: random(100),
+    d: random(20, 80),
     speed: random(5, speedMultiplyer / 100),
     hit: false,
     color: random(colors),
@@ -48,6 +54,7 @@ function createBubble() {
   lastCreationTime = new Date().getTime();
 }
 
+// creating stone
 function createStone() {
   stones.push({
     x: random(400),
@@ -61,6 +68,7 @@ function createStone() {
   lastStoneCreationTime = new Date().getTime();
 }
 
+// creating hero
 let hero = {
   x: 0,
   y: 700,
@@ -74,6 +82,7 @@ function draw() {
 
   background("white");
 
+  // hero
   fill("red");
   noStroke();
   rect(xc, hero.y, hero.w, hero.h);
@@ -81,21 +90,24 @@ function draw() {
 
   //bullet
   for (let [index, bullet] of bullets.entries()) {
-    fill("black");
-    stroke("black");
-    rect(bullet.x, bullet.y, 1, 30);
-    bullet.y -= 2;
-    isBulletOffScreen(bullet, index);
+    for (let i = 0; i < bullet.length; i++) {
+      fill("black");
+      stroke("black");
+      rect(bullet.x, bullet.y, 1, 30);
+      bullet.y -= 2;
+      isBulletOffScreen(bullet, index);
+    }
   }
 
+  //bubble
   for (let [index, bubble] of bubbles.entries()) {
     fill("white");
     strokeWeight(2);
     stroke(bubble.color);
     circle(bubble.x, bubble.y, bubble.d);
     bubble.y = bubble.y + bubble.speed;
-    isHit(hero, bubble);
-    isOffScreen(bubble, index);
+    isBubbleHit(hero, bubble);
+    isBubbleOffScreen(bubble, index);
 
     // to shoot bubbles
     for (let [index, bullet] of bullets.entries()) {
@@ -109,6 +121,7 @@ function draw() {
         bubble.d
       );
 
+      // scoring once bubble is hit
       if (bubble.hit) {
         bullets.splice(index, 1);
         bubbles.splice(index, 1);
@@ -118,23 +131,46 @@ function draw() {
     }
   }
 
+  //stone
   for (let [index, stone] of stones.entries()) {
     noStroke();
     fill(stone.color);
     circle(stone.x, stone.y, stone.d);
     stone.y = stone.y + stone.speed;
+    isStoneHit(hero, stone);
+    isStoneOffScreen(stone, index);
+
+    // to shoot stones
+    for (let [index, bullet] of bullets.entries()) {
+      stone.hit = collideRectCircle(
+        bullet.x,
+        bullet.y,
+        1,
+        30,
+        stone.x,
+        stone.y,
+        stone.d
+      );
+
+      // reload once stone is shot
+      if (stone.hit) {
+        window.location.reload();
+      }
+    }
   }
 
+  //creating new stones
   if (score > 100) {
     if (currentTime - lastStoneCreationTime > stoneTime) {
       createStone();
     }
   }
 
+  //hero's movement restriction
   hero.x = mouseX - 25;
-
   constrain(mouseX, 0, 400);
 
+  //
   if (keyIsPressed) {
     console.log("bullets");
   }
@@ -147,7 +183,7 @@ function draw() {
 }
 
 // for score
-function isOffScreen(bubble, index) {
+function isBubbleOffScreen(bubble, index) {
   if (bubble.y > 800) {
     bubbles.splice(index, 1);
     console.log(bubbles);
@@ -164,7 +200,7 @@ function isBulletOffScreen(bullet, index) {
 }
 
 // for reload
-function isHit(hero, bubble) {
+function isBubbleHit(hero, bubble) {
   if (
     bubble.x + bubble.d > hero.x &&
     bubble.y + bubble.d > hero.y &&
@@ -185,5 +221,25 @@ function keyPressed() {
     };
 
     bullets.push(bullet);
+  }
+}
+
+// for removing stone from array
+function isStoneOffScreen(stone, index) {
+  if (stone.y < 0) {
+    stones.splice(index, 1);
+  }
+}
+
+// for reload once stone touches the hero
+function isStoneHit(hero, stone) {
+  if (
+    stone.x + stone.d > hero.x &&
+    stone.y + stone.d > hero.y &&
+    stone.x - stone.d < hero.x + hero.w &&
+    stone.y - stone.d < hero.y + hero.h
+  ) {
+    console.log("HIT");
+    window.location.reload();
   }
 }
