@@ -28,7 +28,7 @@ let lastStoneCreationTime = 0;
 
 // creating bullet
 function createBullet() {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 6; i++) {
     //limit bullets on a screen
     bullets.push({
       x: hero.x,
@@ -90,7 +90,7 @@ function draw() {
 
   //bullet
   for (let [index, bullet] of bullets.entries()) {
-    for (let i = 0; i < bullet.length; i++) {
+    for (let i = 0; i < bullets.length; i++) {
       fill("black");
       stroke("black");
       rect(bullet.x, bullet.y, 1, 30);
