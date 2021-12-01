@@ -1,3 +1,4 @@
+let screen = 0;
 function setup() {
   createCanvas(400, 800);
 }
@@ -75,108 +76,115 @@ function createStone() {
 
 // creating hero
 let hero = {
-  x: 0,
+  x: 200,
   y: 700,
   w: 50,
   h: 100,
 };
 
 function draw() {
-  // restrict movement of hero
-  let xc = constrain(hero.x, leftConstraint, rightConstraint);
+  if (screen == 0) {
+    background(0);
+    fill(255);
+    textAlign(CENTER);
+    text("Click to start", width / 2, height / 2);
+  } else if (screen == 1) {
+    // restrict movement of hero
+    let xc = constrain(hero.x, leftConstraint, rightConstraint);
 
-  background("white");
+    background("white");
 
-  // hero
-  // image(canon, hero.x, hero.y, 119, 153);
-  fill("red");
-  noStroke();
-  rect(xc, hero.y, hero.w, hero.h);
-  text(score, 300, 50);
-
-  //bullet
-  for (let [index, bullet] of bullets.entries()) {
-    for (let i = 0; i < bullets.length; i++) {
-      rectMode(CENTER);
-      fill("black");
-      stroke("black");
-      rect(bullet.x, bullet.y, 1, 30);
-      bullet.y -= 2;
-      isBulletOffScreen(bullet, index);
-    }
-  }
-
-  //bubble
-  for (let [index, bubble] of bubbles.entries()) {
-    fill("white");
-    strokeWeight(2);
-    stroke(bubble.color);
-    circle(bubble.x, bubble.y, bubble.d);
-    bubble.y = bubble.y + bubble.speed;
-    isBubbleHit(hero, bubble);
-    isBubbleOffScreen(bubble, index);
-
-    // to shoot bubbles
-    for (let [index, bullet] of bullets.entries()) {
-      bubble.hit = collideRectCircle(
-        bullet.x,
-        bullet.y,
-        1,
-        30,
-        bubble.x,
-        bubble.y,
-        bubble.d
-      );
-
-      // scoring once bubble is hit
-      if (bubble.hit) {
-        bullets.splice(index, 1);
-        bubbles.splice(index, 1);
-        score = score + 10;
-        speedMultiplyer = 100;
-      }
-    }
-  }
-
-  //stone
-  for (let [index, stone] of stones.entries()) {
+    // hero
+    // image(canon, hero.x, hero.y, 119, 153);
+    fill("red");
     noStroke();
-    fill(stone.color);
-    circle(stone.x, stone.y, stone.d);
-    stone.y = stone.y + stone.speed;
-    isStoneHit(hero, stone);
-    isStoneOffScreen(stone, index);
+    rect(xc, hero.y, hero.w, hero.h);
+    text(score, 300, 50);
 
-    // to shoot stones
+    //bullet
     for (let [index, bullet] of bullets.entries()) {
-      stone.hit = collideRectCircle(
-        bullet.x,
-        bullet.y,
-        1,
-        30,
-        stone.x,
-        stone.y,
-        stone.d
-      );
-
-      // reload once stone is shot
-      if (stone.hit) {
-        window.location.reload();
+      for (let i = 0; i < bullets.length; i++) {
+        rectMode(CENTER);
+        fill("black");
+        stroke("black");
+        rect(bullet.x, bullet.y, 1, 30);
+        bullet.y -= 2;
+        isBulletOffScreen(bullet, index);
       }
     }
-  }
 
-  //creating new stones
-  if (score > 100) {
-    if (currentTime - lastStoneCreationTime > stoneTime) {
-      createStone();
+    //bubble
+    for (let [index, bubble] of bubbles.entries()) {
+      fill("white");
+      strokeWeight(2);
+      stroke(bubble.color);
+      circle(bubble.x, bubble.y, bubble.d);
+      bubble.y = bubble.y + bubble.speed;
+      isBubbleHit(hero, bubble);
+      isBubbleOffScreen(bubble, index);
+
+      // to shoot bubbles
+      for (let [index, bullet] of bullets.entries()) {
+        bubble.hit = collideRectCircle(
+          bullet.x,
+          bullet.y,
+          1,
+          30,
+          bubble.x,
+          bubble.y,
+          bubble.d
+        );
+
+        // scoring once bubble is hit
+        if (bubble.hit) {
+          bullets.splice(index, 1);
+          bubbles.splice(index, 1);
+          score = score + 10;
+          speedMultiplyer = 100;
+        }
+      }
+
+      //stone
+      for (let [index, stone] of stones.entries()) {
+        noStroke();
+        fill(stone.color);
+        circle(stone.x, stone.y, stone.d);
+        stone.y = stone.y + stone.speed;
+        isStoneHit(hero, stone);
+        isStoneOffScreen(stone, index);
+
+        // to shoot stones
+        for (let [index, bullet] of bullets.entries()) {
+          stone.hit = collideRectCircle(
+            bullet.x,
+            bullet.y,
+            1,
+            30,
+            stone.x,
+            stone.y,
+            stone.d
+          );
+
+          // reload once stone is shot
+          if (stone.hit) {
+            window.location.reload();
+          }
+        }
+      }
     }
-  }
 
-  currentTime = new Date().getTime();
+    //creating new stones
+    if (score > 100) {
+      if (currentTime - lastStoneCreationTime > stoneTime) {
+        createStone();
+      }
+    }
 
-  if (currentTime - lastCreationTime > spawnTime) {
-    createBubble();
+    currentTime = new Date().getTime();
+
+    if (currentTime - lastCreationTime > spawnTime) {
+      createBubble();
+    }
   }
 }
 
@@ -185,8 +193,6 @@ function isBubbleOffScreen(bubble, index) {
   if (bubble.y > 800) {
     bubbles.splice(index, 1);
     console.log(bubbles);
-    // score = score + 10;
-    // speedMultiplyer = 100;
   }
 }
 
@@ -213,10 +219,10 @@ function isBubbleHit(hero, bubble) {
 //for bullets
 function keyPressed() {
   if (keyCode === 37) {
-    hero.x = hero.x - 20;
+    hero.x = hero.x - 15;
   }
   if (keyCode === 39) {
-    hero.x = hero.x + 20;
+    hero.x = hero.x + 15;
   }
 
   if (keyCode === 32) {
@@ -246,5 +252,11 @@ function isStoneHit(hero, stone) {
   ) {
     console.log("HIT");
     window.location.reload();
+  }
+}
+
+function mousePressed() {
+  if (screen == 0) {
+    screen = 1;
   }
 }
