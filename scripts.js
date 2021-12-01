@@ -2,6 +2,11 @@ function setup() {
   createCanvas(400, 800);
 }
 
+// let canon;
+// function preload() {
+//   canon = loadImage("canon.png");
+// }
+
 // defining bullet array
 let bullets = [];
 let stones = [];
@@ -72,8 +77,8 @@ function createStone() {
 let hero = {
   x: 0,
   y: 700,
-  h: 100,
   w: 50,
+  h: 100,
 };
 
 function draw() {
@@ -83,6 +88,7 @@ function draw() {
   background("white");
 
   // hero
+  // image(canon, hero.x, hero.y, 119, 153);
   fill("red");
   noStroke();
   rect(xc, hero.y, hero.w, hero.h);
@@ -166,19 +172,19 @@ function draw() {
     }
   }
 
-  //hero's movement restriction
-  hero.x = mouseX - 25;
-  constrain(mouseX, 0, 400);
-
-  //
-  if (keyIsPressed) {
-    console.log("bullets");
-  }
-
   currentTime = new Date().getTime();
 
   if (currentTime - lastCreationTime > spawnTime) {
     createBubble();
+  }
+}
+
+// move hero
+function keyPressed() {
+  if (keyCode === LEFT_ARROW) {
+    hero.x = hero.x - 20;
+  } else if (keyCode === RIGHT_ARROW) {
+    hero.x = hero.x + 20;
   }
 }
 
