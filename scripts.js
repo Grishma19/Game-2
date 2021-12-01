@@ -97,6 +97,7 @@ function draw() {
   //bullet
   for (let [index, bullet] of bullets.entries()) {
     for (let i = 0; i < bullets.length; i++) {
+      rectMode(CENTER);
       fill("black");
       stroke("black");
       rect(bullet.x, bullet.y, 1, 30);
