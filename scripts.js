@@ -179,15 +179,6 @@ function draw() {
   }
 }
 
-// move hero
-function keyPressed() {
-  if (keyCode === LEFT_ARROW) {
-    hero.x = hero.x - 20;
-  } else if (keyCode === RIGHT_ARROW) {
-    hero.x = hero.x + 20;
-  }
-}
-
 // for score
 function isBubbleOffScreen(bubble, index) {
   if (bubble.y > 800) {
@@ -220,9 +211,16 @@ function isBubbleHit(hero, bubble) {
 
 //for bullets
 function keyPressed() {
+  if (keyCode === 37) {
+    hero.x = hero.x - 20;
+  }
+  if (keyCode === 39) {
+    hero.x = hero.x + 20;
+  }
+
   if (keyCode === 32) {
     let bullet = {
-      x: mouseX,
+      x: hero.x,
       y: 700,
     };
 
