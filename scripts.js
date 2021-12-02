@@ -1,17 +1,20 @@
 let screen = 0;
+
+let canonImage;
+function preload() {
+  canonImage = loadImage("canon.png");
+  canonImage.resize(119, 153);
+}
+
 function setup() {
   createCanvas(400, 800);
 }
-
-// let canon;
-// function preload() {
-//   canon = loadImage("canon.png");
-// }
 
 // defining bullet array
 let bullets = [];
 let stones = [];
 let bubbles = [];
+let bulletOnScreen = 10;
 
 // bubbles of diff
 const colors = ["green", "red", "blue", "yellow", "purple"];
@@ -34,16 +37,14 @@ let lastStoneCreationTime = 0;
 
 // creating bullet
 function createBullet() {
-  for (let i = 0; i < 6; i++) {
-    //limit bullets on a screen
-    bullets.push({
-      x: hero.x,
-      y: hero.y,
-      w: 1,
-      y: 30,
-      hit: false,
-    });
-  }
+  //limit bullets on a screen
+  bullets.push({
+    x: hero.x,
+    y: hero.y,
+    w: 1,
+    y: 30,
+    hit: false,
+  });
 }
 
 // creating bubble
@@ -77,9 +78,9 @@ function createStone() {
 // creating hero
 let hero = {
   x: 200,
-  y: 700,
-  w: 50,
-  h: 100,
+  y: 600,
+  w: 119,
+  h: 153,
 };
 
 function draw() {
@@ -95,22 +96,22 @@ function draw() {
     background("white");
 
     // hero
-    // image(canon, hero.x, hero.y, 119, 153);
-    fill("red");
+    image(canonImage, xc - 59.5, hero.y);
+    // fill("red");
+    // noStroke();
+    // rect(xc, hero.y, hero.w, hero.h);
+    fill("black");
     noStroke();
-    rect(xc, hero.y, hero.w, hero.h);
     text(score, 300, 50);
 
     //bullet
     for (let [index, bullet] of bullets.entries()) {
-      for (let i = 0; i < bullets.length; i++) {
-        rectMode(CENTER);
-        fill("black");
-        stroke("black");
-        rect(bullet.x, bullet.y, 1, 30);
-        bullet.y -= 2;
-        isBulletOffScreen(bullet, index);
-      }
+      rectMode(CENTER);
+      fill("black");
+      stroke("black");
+      rect(bullet.x, bullet.y, 1, 30);
+      bullet.y -= 2;
+      isBulletOffScreen(bullet, index);
     }
 
     //bubble
@@ -200,6 +201,8 @@ function isBubbleOffScreen(bubble, index) {
 function isBulletOffScreen(bullet, index) {
   if (bullet.y < 0) {
     bullets.splice(index, 1);
+    bulletOnScreen = bulletOnScreen + 1;
+    console.log("you have " + bulletOnScreen + "bullets");
   }
 }
 
@@ -225,12 +228,13 @@ function keyPressed() {
     hero.x = hero.x + 15;
   }
 
-  if (keyCode === 32) {
+  if (keyCode === 32 && bulletOnScreen > 0) {
     let bullet = {
       x: hero.x,
       y: 700,
     };
 
+    bulletOnScreen = bulletOnScreen - 1;
     bullets.push(bullet);
   }
 }
