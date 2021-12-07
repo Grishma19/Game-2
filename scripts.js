@@ -228,10 +228,10 @@ function isBubbleHit(hero, bubble) {
 //for bullets
 function keyPressed() {
   if (keyCode === 37) {
-    hero.x = hero.x - 15;
+    hero.x = hero.x - 25;
   }
   if (keyCode === 39) {
-    hero.x = hero.x + 15;
+    hero.x = hero.x + 25;
   }
 
   if (keyCode === 32 && bulletOnScreen > 0) {
