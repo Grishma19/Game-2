@@ -1,13 +1,17 @@
 let screen = 0;
 
+let bubblePopSound;
 let canonImage;
+
 function preload() {
   canonImage = loadImage("canon.png");
-  canonImage.resize(119, 153);
+  bubblePopSound = loadSound("bubblePop.mp3");
 }
 
 function setup() {
   createCanvas(400, 800);
+  canonImage.resize(119, 153);
+  bubblePopSound.play();
 }
 
 // defining bullet array
@@ -78,7 +82,7 @@ function createStone() {
 // creating hero
 let hero = {
   x: 200,
-  y: 600,
+  y: 647,
   w: 119,
   h: 153,
 };
@@ -140,8 +144,10 @@ function draw() {
         if (bubble.hit) {
           bullets.splice(index, 1);
           bubbles.splice(index, 1);
+          bubblePopSound.play();
           score = score + 10;
           speedMultiplyer = 100;
+          console.log("you have " + bulletOnScreen + "bullets");
         }
       }
 
