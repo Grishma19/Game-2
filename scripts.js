@@ -192,7 +192,7 @@ function draw() {
     noStroke();
     fill("black");
     textSize(18);
-    text("You have " + bulletOnScreen + " bullets", 200, 200);
+    text("You have " + bulletOnScreen + " bullets", 200, 100);
   }
 }
 
