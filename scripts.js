@@ -24,6 +24,7 @@ let bulletOnScreen = 10;
 const colors = ["green", "red", "blue", "yellow", "purple"];
 
 let score = 0;
+// let level = 0;
 let speedMultiplyer = 0;
 
 // restrict movement of hero
@@ -101,9 +102,6 @@ function draw() {
 
     // hero
     image(canonImage, xc - 59.5, hero.y);
-    // fill("red");
-    // noStroke();
-    // rect(xc, hero.y, hero.w, hero.h);
     fill("black");
     noStroke();
     text(score, 300, 50);
@@ -147,7 +145,6 @@ function draw() {
           bubblePopSound.play();
           score = score + 10;
           speedMultiplyer = 100;
-          console.log("you have " + bulletOnScreen + "bullets");
         }
       }
 
@@ -192,6 +189,10 @@ function draw() {
     if (currentTime - lastCreationTime > spawnTime) {
       createBubble();
     }
+    noStroke();
+    fill("black");
+    textSize(18);
+    text("You have " + bulletOnScreen + " bullets", 200, 200);
   }
 }
 
