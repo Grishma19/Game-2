@@ -140,8 +140,7 @@ function draw() {
 
         // scoring once bubble is hit
         if (bubble.hit) {
-          bullets.splice(index, 1);
-          bubbles.splice(index, 1);
+          bullets.splice(index, 1) && bubbles.splice(index, 1);
           bubblePopSound.play();
           score = score + 10;
           speedMultiplyer = 100;
